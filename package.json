@@ -1,0 +1,23 @@
+{
+  "name": "crud-mysql-api",
+  "version": "1.0.0",
+  "description": "CRUD MySQL REST API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "express",
+    "rest",
+    "crud",
+    "mysql"
+  ],
+  "author": "Rogério Domingos",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.0",
+    "express-myconnection": "^1.0.4",
+    "mysql": "^2.17.1"
+  }
+}
