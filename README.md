@@ -15,4 +15,7 @@ cd crud-mysql-apio && npm install
 
 # Run node server.js
 npm start
+
+# Run nodemon server.js
+npm run dev
 ```

@@ -13,10 +13,33 @@ router.get("/test", (req, res) => {
 // @desc    Show all the users
 // @access  Public
 router.get("/", (req, res) => {
-  req.getConnection((error, conn) => {
-    conn.query("SELECT * FROM users", (err, rows, fields) => {
-      if (err) return res.status(400).json({ msg: "Something goes wrong" });
-      else res.json(rows);
+  req.getConnection((err, conn) => {
+    conn.query("SELECT * FROM users", (err, users) => {
+      // Case any exception return error
+      if (err) return res.status(400).json(err);
+
+      // Show JSON list of users
+      res.json(users);
+    });
+  });
+});
+
+// @route   POST api/users
+// @desc    Insert new user
+// @access  Public
+router.post("/", (req, res) => {
+  const newUser = req.body;
+
+  if (!newUser.name || !newUser.age || !newUser.email)
+    return res.status(400).json({ error: "All the fields are required." });
+
+  req.getConnection((err, conn) => {
+    conn.query("INSERT INTO users SET ?", newUser, (err, result) => {
+      // Case any exception return error
+      if (err) return res.status(400).json(err);
+
+      // Show JSON user inserted
+      res.json(newUser);
     });
   });
 });
