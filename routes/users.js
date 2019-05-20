@@ -14,7 +14,7 @@ router.get("/test", (req, res) => {
 // @access  Public
 router.get("/", (req, res) => {
   req.getConnection((err, conn) => {
-    conn.query("SELECT * FROM users", (err, users) => {
+    conn.query("SELECT * FROM crud_users", (err, users) => {
       // Case any exception return error
       if (err) return res.status(400).json(err);
 
@@ -34,13 +34,60 @@ router.post("/", (req, res) => {
     return res.status(400).json({ error: "All the fields are required." });
 
   req.getConnection((err, conn) => {
-    conn.query("INSERT INTO users SET ?", newUser, (err, result) => {
+    conn.query("INSERT INTO crud_users SET ?", newUser, (err, result) => {
       // Case any exception return error
       if (err) return res.status(400).json(err);
 
       // Show JSON user inserted
       res.json(newUser);
     });
+  });
+});
+
+// @route   PUT api/users/:id
+// @desc    Edit user
+// @access  Public
+router.put("/:id", (req, res) => {
+  const user = {
+    id: req.params.id,
+    name: req.body.name,
+    email: req.body.email,
+    age: req.body.age
+  };
+
+  req.getConnection((err, conn) => {
+    conn.query(
+      "UPDATE crud_users SET ? WHERE id = " + req.params.id,
+      user,
+      (err, result) => {
+        // Case any exception return error
+        if (err) return res.status(400).json(err);
+
+        // Show JSON user inserted
+        res.json(user);
+      }
+    );
+  });
+});
+
+// @route   DELETE api/users/:id
+// @desc    Delete user
+// @access  Public
+router.delete("/:id", (req, res) => {
+  const user = { id: req.params.id };
+
+  req.getConnection((err, conn) => {
+    conn.query(
+      "DELETE FROM crud_users WHERE id = " + req.params.id,
+      user,
+      (err, result) => {
+        // Case any exception return error
+        if (err) return res.status(400).json(err);
+
+        // Show JSON user inserted
+        res.json({ msg: `User ID: ${user.id} deleted with success!` });
+      }
+    );
   });
 });
 
